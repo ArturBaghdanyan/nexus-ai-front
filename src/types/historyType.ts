@@ -1,9 +1,12 @@
 export type HistoryItem = {
-  id: number;
-  name: string;
-  url: string;
-  result?: string | undefined;
+  _id: string;
+  mode: "url" | "code";
+  prompt: string;
+  language?: string;
+  owner?: string;
+  name?: string;
+  result?: string;
   summary?: string;
-  score?: number;
-  created_at: string;
+  score?: number; 
+  createdAt?: string; 
 };

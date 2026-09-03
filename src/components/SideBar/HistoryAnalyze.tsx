@@ -1,41 +1,42 @@
 import { HistoryItem } from "@/src/types/historyType";
-import { createClient } from "../../lib/supabase/client";
 
 interface Props {
   data: HistoryItem[];
-  handleOpen: (id: number) => void;
+  handleOpen: (id: string) => void;
 }
 
 const HistoryAnalyze = ({ data, handleOpen }: Props) => {
-  const supabase = createClient();
   return (
-    <aside className="w-[30%] h-[100vh] border-r-1 transition-shadow transition duration-300 shadow-md p-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">
-      <h2 className="text-green-600">History Analysis</h2>
+    <aside className="w-[25%] h-[100vh] border-r-1 transition-shadow transition duration-300 shadow-md p-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">
+      <h2 className="text-green-600 font-bold mb-4">History Analysis</h2>
 
-      <ul className="list-style-type-none flex flex-col text-start">
-        {supabase.auth ? (
-          data.map((item) => (
-            <li
-              key={item.id}
-              className="cursor-pointer rounded-lg border p-3 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition"
-              onClick={() => handleOpen(item.id)}
-            >
-              <h3 className="font-semibold">{item.name}</h3>
-              <p className="text-xs text-zinc-500">{item.summary}</p>
-              <div className="flex justify-between mt-2">
-                <span className="text-green-600 font-bold">
-                  {item.score || 0}/100
-                </span>
+      <ul className="list-style-type-none flex flex-col gap-3 text-start">
+        {data.length !== 0 && data.map((item) => (
+          <li
+            key={item._id}
+            className="cursor-pointer rounded-lg border p-3 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition"
+            onClick={() => handleOpen(item._id)}
+          >
+            <h3 className="font-semibold truncate">
+              {item.name || item.prompt}
+            </h3>
+            {item.summary && (
+              <p className="text-xs text-zinc-500 mt-1">{item.summary}</p>
+            )}
 
-                <span className="text-xs">
-                  {new Date(item.created_at).toLocaleDateString()}
-                </span>
-              </div>
-            </li>
-          ))
-        ) : (
-          <div></div>
-        )}
+            <div className="flex justify-between items-center mt-3">
+              <span className="text-green-600 font-bold text-sm">
+                {item.score ?? 0}/100
+              </span>
+
+              <span className="text-xs text-zinc-400">
+                {item.createdAt
+                  ? new Date(item.createdAt).toLocaleDateString()
+                  : ""}
+              </span>
+            </div>
+          </li>
+        ))}
       </ul>
     </aside>
   );

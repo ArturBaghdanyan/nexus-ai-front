@@ -1,18 +1,19 @@
 "use client";
 
-import React from "react";
-import ReactMarkdown, { type Components } from "react-markdown";
+import React, { useRef } from "react";
 import CopyButton from "./CopyButton";
 import PdfConvert from "./PdfConvert";
-import { jsPDF } from "jspdf";
 import { markdownComponents } from "./CodeBlock";
 import { CopyModal } from "./CopyModal";
+import { jsPDF } from "jspdf";
+import ReactMarkdown, { type Components } from "react-markdown";
 
 const ReviewResult = ({ result }: { result: string }) => {
   const [isOpen, setIsOpen] = React.useState(true);
   const [showCopyModal, setShowCopyModal] = React.useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  if (!result) return null;
+  if (!result || !isOpen) return null;
 
   const handleClose = () => {
     setIsOpen(false);
@@ -20,8 +21,15 @@ const ReviewResult = ({ result }: { result: string }) => {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(result);
+
+    // Clear any existing timeout if clicked rapidly
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
     setShowCopyModal(true);
-    setTimeout(() => {
+
+    timeoutRef.current = setTimeout(() => {
       setShowCopyModal(false);
     }, 1500);
   };
@@ -32,10 +40,8 @@ const ReviewResult = ({ result }: { result: string }) => {
     doc.save("result.pdf");
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="w-full max-w-2xl mt-8 p-6 bg-white dark:bg-zinc-900 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full overflow-auto p-4">
+    <div className="w-full max-w-2xl mt-8 p-6 bg-white dark:bg-zinc-900 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full overflow-auto">
       <span
         className="absolute top-4 right-4 text-2xl font-bold text-zinc-900 dark:text-white cursor-pointer"
         onClick={handleClose}
@@ -46,13 +52,19 @@ const ReviewResult = ({ result }: { result: string }) => {
         Review Result
       </h2>
       <div className="prose dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-300">
-        <ReactMarkdown components={markdownComponents as Components}>{result}</ReactMarkdown>
+        <ReactMarkdown components={markdownComponents as Components}>
+          {result}
+        </ReactMarkdown>
       </div>
-      <div className="flex gap-3 items-center">
+      <div className="flex gap-3 items-center mt-4">
         <CopyButton onClick={copyToClipboard} />
         <PdfConvert onClick={pdfConvert} />
       </div>
-      {showCopyModal && <CopyModal />}
+      {showCopyModal && (
+        <div className="fixed bottom-6 right-6 z-50">
+          <CopyModal />
+        </div>
+      )}
     </div>
   );
 };

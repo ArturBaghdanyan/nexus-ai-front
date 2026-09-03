@@ -1,16 +1,19 @@
-import { supabase } from "../lib/supabase";
+import { HistoryApi } from "../api/history";
 
 export const fetchHistory = async () => {
-  const { data, error } = await supabase
-    .from("history")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(10);
+  try {
+    const response = await HistoryApi();
 
-  if (error) {
+    if (response && Array.isArray(response.data)) {
+      return response.data;
+    }
+
+    if (Array.isArray(response)) {
+      return response;
+    }
+    return [];
+  } catch (error) {
     console.error("Error fetching history:", error);
     return [];
   }
-
-  return data;
 };

@@ -1,4 +1,4 @@
-import axios from "axios";
+import { api } from "../lib/axios";
 
 export const analyzeRepository = async (
   mode: "url" | "code",
@@ -6,21 +6,18 @@ export const analyzeRepository = async (
   language: string,
 ) => {
   try {
-    const response = await axios.post(
-      "/api/generate",
-      {
-        mode,
-        prompt,
-        language,
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-      },
+    const response = await api.post("/generate", {
+      mode,
+      prompt,
+      language,
+    });
+    console.log("API response:", response.data.data.result);
+    return response.data.data.result;
+  } catch (error: unknown) {
+    console.error(
+      "Error analyzing repository details:",
+      error instanceof Error ? error.message : error,
     );
-    console.log("API response:", response.data);
-    return response.data.result;
-  } catch (error) {
-    console.error("Error analyzing repository:", error);
     throw error;
   }
 };

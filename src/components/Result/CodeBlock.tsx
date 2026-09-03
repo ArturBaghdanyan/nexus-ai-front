@@ -16,7 +16,6 @@ function CodeBlock({
   const codeString = String(children).replace(/\n$/, "");
 
   if (!match) {
-    // inline code
     return (
       <code className="bg-zinc-100 dark:bg-zinc-800 text-pink-600 dark:text-pink-400 px-1.5 py-0.5 rounded text-sm">
         {children}
@@ -55,7 +54,13 @@ function CodeBlock({
 }
 
 const markdownComponents = {
-  code({ className, children }: { className?: string; children: React.ReactNode }) {
+  code({
+    className,
+    children,
+  }: {
+    className?: string;
+    children: React.ReactNode;
+  }) {
     return <CodeBlock className={className}>{children}</CodeBlock>;
   },
 };
