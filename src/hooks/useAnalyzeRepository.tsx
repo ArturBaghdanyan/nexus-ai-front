@@ -30,7 +30,6 @@ export const useAnalyzeRepository = (
         language,
       );
       setResult(res);
-      console.log('ressss', res)
       const data = await fetchHistory();
       setList(data);
     } catch {
