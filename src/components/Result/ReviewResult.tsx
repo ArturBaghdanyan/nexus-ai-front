@@ -22,7 +22,6 @@ const ReviewResult = ({ result }: { result: string }) => {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(result);
 
-    // Clear any existing timeout if clicked rapidly
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -41,25 +40,30 @@ const ReviewResult = ({ result }: { result: string }) => {
   };
 
   return (
-    <div className="w-full max-w-2xl mt-8 p-6 bg-white dark:bg-zinc-900 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full overflow-auto">
-      <span
-        className="absolute top-4 right-4 text-2xl font-bold text-zinc-900 dark:text-white cursor-pointer"
+    <div className="w-full max-w-3xl mt-8 p-6 bg-white rounded-2xl shadow-2xl border border-slate-200 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[85vh] overflow-auto z-50 text-slate-900">
+      <button
+        type="button"
+        className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-xl bg-slate-100 text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-all cursor-pointer text-lg font-bold shadow-sm"
         onClick={handleClose}
       >
         &times;
-      </span>
-      <h2 className="text-2xl font-bold mb-4 text-zinc-900 dark:text-white">
+      </button>
+
+      <h2 className="text-2xl font-extrabold mb-6 text-slate-900 tracking-wide">
         Review Result
       </h2>
-      <div className="prose dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-300">
+
+      <div className="prose max-w-none text-slate-700 text-left bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6 shadow-inner">
         <ReactMarkdown components={markdownComponents as Components}>
           {result}
         </ReactMarkdown>
       </div>
-      <div className="flex gap-3 items-center mt-4">
+
+      <div className="flex gap-3 items-center pt-3 border-t border-slate-200">
         <CopyButton onClick={copyToClipboard} />
         <PdfConvert onClick={pdfConvert} />
       </div>
+
       {showCopyModal && (
         <div className="fixed bottom-6 right-6 z-50">
           <CopyModal />

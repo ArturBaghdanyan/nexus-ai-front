@@ -7,36 +7,41 @@ interface Props {
 
 const HistoryAnalyze = ({ data, handleOpen }: Props) => {
   return (
-    <aside className="w-[25%] h-[100vh] border-r-1 transition-shadow transition duration-300 shadow-md p-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">
-      <h2 className="text-green-600 font-bold mb-4">History Analysis</h2>
+    <aside className="w-[25%] h-[100vh] border-r border-slate-800 bg-slate-900/90 backdrop-blur-md p-4 text-slate-100 flex flex-col">
+      <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 font-bold mb-4 tracking-wide text-sm uppercase">
+        History Analysis
+      </h2>
 
-      <ul className="list-style-type-none flex flex-col gap-3 text-start">
-        {data.length !== 0 && data.map((item) => (
-          <li
-            key={item._id}
-            className="cursor-pointer rounded-lg border p-3 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition"
-            onClick={() => handleOpen(item._id)}
-          >
-            <h3 className="font-semibold truncate">
-              {item.name || item.prompt}
-            </h3>
-            {item.summary && (
-              <p className="text-xs text-zinc-500 mt-1">{item.summary}</p>
-            )}
+      <ul className="flex flex-col gap-3 overflow-y-auto pr-1">
+        {data.length !== 0 &&
+          data.map((item) => (
+            <li
+              key={item._id}
+              className="cursor-pointer rounded-xl border border-slate-800 bg-slate-800/40 p-3.5 hover:bg-slate-800 hover:border-slate-700 transition-all shadow-sm"
+              onClick={() => handleOpen(item._id)}
+            >
+              <h3 className="font-semibold text-slate-200 truncate text-sm">
+                {item.name || item.prompt}
+              </h3>
+              {item.summary && (
+                <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                  {item.summary}
+                </p>
+              )}
 
-            <div className="flex justify-between items-center mt-3">
-              <span className="text-green-600 font-bold text-sm">
-                {item.score ?? 0}/100
-              </span>
+              <div className="flex justify-between items-center mt-3 pt-2 border-t border-slate-800/60">
+                <span className="text-emerald-400 font-bold text-xs bg-emerald-500/10 px-2 py-0.5 rounded-md">
+                  {item.score ?? 0}/100
+                </span>
 
-              <span className="text-xs text-zinc-400">
-                {item.createdAt
-                  ? new Date(item.createdAt).toLocaleDateString()
-                  : ""}
-              </span>
-            </div>
-          </li>
-        ))}
+                <span className="text-[11px] text-slate-500">
+                  {item.createdAt
+                    ? new Date(item.createdAt).toLocaleDateString()
+                    : ""}
+                </span>
+              </div>
+            </li>
+          ))}
       </ul>
     </aside>
   );

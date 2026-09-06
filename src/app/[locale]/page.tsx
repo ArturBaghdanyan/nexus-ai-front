@@ -8,7 +8,7 @@ export default function LocalePage() {
     <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-100">
       <Header />
 
-      <main className="flex-1 flex items-center justify-center pr-6 text-center">
+      <main className="flex-1 flex items-center justify-center pr-6 text-center bg-[#0f172a]">
         <Index />
       </main>
     </div>

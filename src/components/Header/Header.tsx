@@ -1,6 +1,8 @@
 "use client";
 import { useLocaleSwitcher } from "../../hooks/useLocalSwitcher";
 import { useState, useRef } from "react";
+import AiIcon from "../../assets/icons/ai-icon.png";
+import Image from "next/image";
 
 const languages = [
   { code: "en", label: "English" },
@@ -17,17 +19,27 @@ const Header = () => {
     languages.find((l) => l.code === currentLocale) || languages[0];
 
   return (
-    <header className="bg-white dark:bg-black shadow-md">
+    <header
+      className="text-transparent shadow-md"
+      style={{
+        background: "linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)",
+      }}
+    >
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-          Nexus AI
-        </h1>
+        <div className="flex items-center gap-x-3">
+          <Image
+            src={AiIcon}
+            alt="ai-icon"
+            className="w-8 h-8 cover filter-[150%]"
+          />
+          <h1 className="text-2xl font-bold text-zinc-100">Nexus AI</h1>
+        </div>
 
         <div ref={dropdownRef} className="relative flex items-center gap-x-5">
           <button
             onClick={() => setOpen(!open)}
             disabled={isPending}
-            className="flex items-center gap-2 rounded-md border border-zinc-300 px-3 py-2 text-sm font-medium text-zinc-700 dark:border-zinc-700 dark:text-zinc-200 disabled:opacity-60 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+            className="flex items-center gap-2 rounded-md border border-zinc-300 px-3 py-2 text-sm font-medium text-white dark:border-zinc-700 dark:text-zinc-200 disabled:opacity-60 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
           >
             {selected.label}
           </button>
@@ -37,13 +49,21 @@ const Header = () => {
               {languages.map((lang) => (
                 <button
                   key={lang.code}
-                  className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-zinc-800 cursor-pointer text-zinc-800 dark:text-zinc-200 text-sm"
+                  type="button"
                   onClick={() => {
                     changeLocale(lang.code);
                     setOpen(false);
                   }}
+                  className={`w-full px-4 py-2.5 text-left text-sm transition-colors cursor-pointer flex items-center justify-between ${
+                    currentLocale === lang.code
+                      ? "bg-blue-600/30 text-blue-300 font-semibold"
+                      : "text-slate-200 hover:bg-slate-800 hover:text-white"
+                  }`}
                 >
-                  {lang.label}
+                  <span className="text-black">{lang.label}</span>
+                  {currentLocale === lang.code && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                  )}
                 </button>
               ))}
             </div>
