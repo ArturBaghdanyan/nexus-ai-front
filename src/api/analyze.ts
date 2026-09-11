@@ -13,11 +13,8 @@ export const analyzeRepository = async (
     });
     console.log("API response:", response.data.data.result);
     return response.data.data.result;
-  } catch (error: unknown) {
-    console.error(
-      "Error analyzing repository details:",
-      error instanceof Error ? error.message : error,
-    );
+  } catch (error: any) {
+    console.error("Backend error response:", error.response?.data);
     throw error;
   }
 };
