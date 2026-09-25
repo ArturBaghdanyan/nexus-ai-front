@@ -32,7 +32,7 @@ const Index = () => {
       try {
         const data = await fetchHistory();
         setList(data);
-        console.log(data, 'list dataaaaaa')
+        console.log(data, "list dataaaaaa");
       } catch (err) {
         console.error("Failed to fetch history:", err);
       }
@@ -40,13 +40,19 @@ const Index = () => {
     loadHistory();
   }, []);
 
-  const handleOpen = (id: string) => {
-    const selectedItem = list.find((item) => item._id === id);
-    if (selectedItem && selectedItem.result) {
-      setResult(selectedItem.result);
-      setOpenItemId(id);
-    } else {
-      console.error("Item not found or result is empty");
+  const handleOpen = (selectedItem: HistoryItem) => {
+    if (selectedItem) {
+      setOpenItemId(selectedItem._id || "");
+
+      setResult(selectedItem.result || "");
+
+      if (selectedItem.mode === "url") {
+        setMode("url");
+        setUrl(selectedItem.prompt || "");
+      } else {
+        setMode("code");
+        setCode(selectedItem.prompt || "");
+      }
     }
   };
 
