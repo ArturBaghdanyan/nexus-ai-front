@@ -2,7 +2,7 @@ import { HistoryItem } from "@/src/types/historyType";
 
 interface Props {
   data: HistoryItem[];
-  handleOpen: (id: string) => void;
+  handleOpen: (item: HistoryItem) => void;
 }
 
 const HistoryAnalyze = ({ data, handleOpen }: Props) => {
@@ -18,7 +18,7 @@ const HistoryAnalyze = ({ data, handleOpen }: Props) => {
             <li
               key={item._id}
               className="cursor-pointer rounded-xl border border-slate-800 bg-slate-800/40 p-3.5 hover:bg-slate-800 hover:border-slate-700 transition-all shadow-sm"
-              onClick={() => handleOpen(item._id)}
+              onClick={() => handleOpen(item)}
             >
               <h3 className="font-semibold text-slate-200 truncate text-sm">
                 {item.name || item.prompt}
