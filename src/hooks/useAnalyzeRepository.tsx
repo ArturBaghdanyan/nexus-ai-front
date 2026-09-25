@@ -31,9 +31,7 @@ export const useAnalyzeRepository = (
       );
       setResult(res);
       const updatedData = await fetchHistory();
-      if (Array.isArray(updatedData)) {
-        setList(updatedData); 
-      }
+
       setList(updatedData);
     } catch {
       setError("Something went wrong while analyzing. Please try again.");
