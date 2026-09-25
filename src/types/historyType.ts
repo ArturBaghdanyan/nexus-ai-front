@@ -1,5 +1,5 @@
 export type HistoryItem = {
-  _id: string;
+  _id?: string;
   mode: "url" | "code";
   prompt: string;
   language?: string;

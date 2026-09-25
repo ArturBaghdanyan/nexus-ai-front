@@ -27,12 +27,16 @@ export const HistoryApi = async () => {
   }
 };
 
-export const CreateHistory = async (historyData: HistoryItem) => {
+export const CreateHistory = async (historyData: Omit<HistoryItem, "_id">) => {
   try {
     const visitorId = getVisitorId();
+
     const res = await api.post(
       "/history",
-      { ...historyData, owner: visitorId },
+      {
+        ...historyData,
+        owner: visitorId,
+      },
       {
         headers: {
           "x-visitor-id": visitorId,
